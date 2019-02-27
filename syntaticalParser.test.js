@@ -1,17 +1,12 @@
+const fs = require('fs');
+const path = require('path');
 const { HTMLSyntaticalParser } = require('./syntaticalParser')
 const { HTMLLexicalParser } = require('./lexicalParser')
 
+const testHTML = fs.readFileSync(path.resolve(__dirname, 'test.html')).toString();
+
 const syntaxer = new HTMLSyntaticalParser()
 const lexer = new HTMLLexicalParser(syntaxer)
-
-const testHTML = `<html maaa=a>
-    <head>
-        <title>cool</title>
-    </head>
-    <body>
-        <img src="a" />
-    </body>
-</html>`
 
 for (let c of testHTML) {
   lexer.receiveInput(c)

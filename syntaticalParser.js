@@ -4,7 +4,7 @@ const {
   AttributeToken,
   EndTagToken,
   TextToken,
-  CommentToken,
+  CommentTagToken,
 } = require('./tokens');
 
 class Node {
@@ -20,6 +20,7 @@ Node.ELEMENT_NODE = 1;
 Node.TEXT_NODE = 3;
 Node.COMMENT_NODE = 8;
 Node.DOCUMENT_NODE = 9;
+Node.DOCUMENT_TYPE_NODE = 10;
 
 class Document extends Node {
   constructor() {
@@ -60,7 +61,7 @@ function HTMLSyntaticalParser() {
       stackTop().appendChild(new Text(token.value));
       return;
     }
-    if (token instanceof CommentToken) {
+    if (token instanceof CommentTagToken) {
       stackTop().appendChild(new Comment(token.value));
       return;
     }

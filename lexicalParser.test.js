@@ -1,17 +1,8 @@
-const { HTMLLexicalParser } = require('./lexicalParser')
+const fs = require('fs');
+const path = require('path');
+const { HTMLLexicalParser } = require('./lexicalParser');
 
-const testHTML = `<html maaa='a' a=aaa >
-    <head>
-        <title>cool</title>
-    </head>
-    <body>
-        <img width=12 src="a" onclick='alert("asd");' />
-        <input class="123" foucus/>
-        asdsa
-        <div fixed>asd</div>
-        <div class="123">asd</div>
-    </body>
-</html>`
+const testHTML = fs.readFileSync(path.resolve(__dirname, 'test.html')).toString();
 
 const dummySyntaxer = {
   receiveInput: (token) => {

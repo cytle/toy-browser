@@ -4,7 +4,8 @@ const {
   AttributeToken,
   EndTagToken,
   TextToken,
-  CommentToken,
+  CommentTagToken,
+  DoctypeTagToken,
 } = require('./tokens');
 
 const isWhiteSpaceReg = /[\t \f\n]/
@@ -67,7 +68,7 @@ function HTMLLexicalParser(syntaxer) {
       return endTagOpen;
     }
     if (char === '!') {
-
+      return markupDeclarationOpen;
     }
     if (isTagNameStartLetterReg.test(char)) {
       token = new StartTagToken();
@@ -222,6 +223,24 @@ function HTMLLexicalParser(syntaxer) {
       return attributeValueWithoutQuoted;
     }
     return error(char);
+  }
+
+  function markupDeclarationOpen(char) {
+    if (char === '-') {
+
+    }
+  }
+  function beforeCommentTagValue(params) {
+
+  }
+  function commentTagValue(params) {
+
+  }
+  function beforeCommentTagValue(params) {
+
+  }
+  function commentTagValue(params) {
+
   }
 }
 

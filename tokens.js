@@ -36,7 +36,15 @@ class TextToken {
 }
 
 // 注释
-class CommentToken {
+class CommentTagToken {
+  constructor() {
+    this.value = '';
+    this.start
+  }
+}
+
+// 注释
+class DoctypeTagToken {
   constructor() {
     this.value = '';
   }
@@ -49,5 +57,6 @@ module.exports = {
   AttributeToken,
   EndTagToken,
   TextToken,
-  CommentToken,
+  CommentTagToken,
+  DoctypeTagToken,
 };
