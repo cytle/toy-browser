@@ -10,10 +10,6 @@ const {
 class Node {
   constructor(nodeType) {
     this.nodeType = nodeType;
-    this.childNodes = [];
-  }
-  appendChild(child) {
-    this.childNodes.push(child);
   }
 }
 Node.ELEMENT_NODE = 1;
@@ -25,6 +21,10 @@ Node.DOCUMENT_TYPE_NODE = 10;
 class Document extends Node {
   constructor() {
     super(Node.DOCUMENT_NODE);
+    this.childNodes = [];
+  }
+  appendChild(child) {
+    this.childNodes.push(child);
   }
 }
 
@@ -32,7 +32,10 @@ class Element extends Node {
   constructor(tagName) {
     super(Node.ELEMENT_NODE);
     this.tagName = tagName;
-    this.attributes = {};
+    this.childNodes = [];
+  }
+  appendChild(child) {
+    this.childNodes.push(child);
   }
 }
 
@@ -66,7 +69,7 @@ function HTMLSyntaticalParser() {
       return;
     }
     if (token instanceof AttributeToken) {
-      stackTop().attributes[token.name] = token.value;
+      stackTop()[token.name] = token.value;
       return;
     }
     if (token instanceof StartTagToken) {
