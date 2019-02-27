@@ -1,7 +1,7 @@
 const {
   StartTagToken,
   StartTagEndToken,
-  Attribute,
+  AttributeToken,
   EndTagToken,
   TextToken,
   CommentToken,
@@ -138,7 +138,7 @@ function HTMLLexicalParser(syntaxer) {
       return beforeAttributeName;
     }
     if (isAttributeStartLetterReg.test(char)) {
-      token = new Attribute();
+      token = new AttributeToken();
       token.name = char;
       return attributeName;
     }
@@ -181,6 +181,7 @@ function HTMLLexicalParser(syntaxer) {
     }
     // TODO 有效的value值
     if (/[^/<>=]/.test(char)) {
+      token.value += char;
       return attributeValueWithoutQuoted;
     }
     return error(char);

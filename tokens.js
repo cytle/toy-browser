@@ -7,7 +7,7 @@ class StartTagToken {
 }
 
 // 属性
-class Attribute {
+class AttributeToken {
   constructor() {
     this.name = '';
     this.value = '';
@@ -46,7 +46,7 @@ class CommentToken {
 module.exports = {
   StartTagToken,
   StartTagEndToken,
-  Attribute,
+  AttributeToken,
   EndTagToken,
   TextToken,
   CommentToken,

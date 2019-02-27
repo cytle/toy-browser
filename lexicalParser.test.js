@@ -1,6 +1,6 @@
 const { HTMLLexicalParser } = require('./lexicalParser')
 
-const testHTML = `<html maaa=a >
+const testHTML = `<html maaa='a' a=aaa >
     <head>
         <title>cool</title>
     </head>
