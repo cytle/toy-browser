@@ -5,7 +5,7 @@ const testHTML = `<html maaa=a >
         <title>cool</title>
     </head>
     <body>
-        <img src="a" />
+        <img width=12 src="a" onclick='alert("asd");' />
         <input class="123" foucus/>
         asdsa
         <div fixed>asd</div>

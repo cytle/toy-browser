@@ -1,13 +1,24 @@
-const isLetterReg = /[a-zA-Z]/
-const isAttributeLetterReg = /[_\-0-9a-zA-Z]/
-const isWhiteSpaceReg = /[\t \f\n]/
+const {
+  StartTagToken,
+  StartTagEndToken,
+  Attribute,
+  EndTagToken,
+  TextToken,
+  CommentToken,
+} = require('./tokens');
 
+const isWhiteSpaceReg = /[\t \f\n]/
+const isWordStartLetterReg = /[0-9a-zA-Z]/
+const isWordLetterReg = /[_\-0-9a-zA-Z]/
+
+const isTagNameStartLetterReg = isWordStartLetterReg;
+const isTagNameLetterReg = isWordLetterReg;
+const isAttributeStartLetterReg = isWordStartLetterReg;
+const isAttributeLetterReg = isWordLetterReg;
 
 function HTMLLexicalParser(syntaxer) {
   let state = data;
-  let content = '';
   let token = null;
-  let attribute = null;
   this.receiveInput = (char) => {
     state = state(char);
   };
@@ -16,42 +27,51 @@ function HTMLLexicalParser(syntaxer) {
     state = data;
   };
 
-
-  function emitToken (token) {
+  function emitToken() {
+    if (!token) {
+      throw new Error('token is null');
+    }
     syntaxer.receiveInput(token)
+    token = null;
+  }
+
+  function emitStartTagEndToken(isCloseingTagEnd) {
+    token = new StartTagEndToken();
+    token.isCloseingTagEnd = isCloseingTagEnd;
+    emitToken();
   }
 
   function error (c) {
-    console.log(new Error(`unexpected char '${c}'`));
+    throw new Error(`unexpected char '${c}'`);
   }
 
   function data(char) {
     if (char === '<') {
-      emitToken(content);
-      content = '';
       return tagOpen;
     }
-
-    content += char;
-    return data;
+    token = new TextToken();
+    token.value = char;
+    return text;
+  }
+  function text(char) {
+    if (char === '<') {
+      emitToken();
+      return tagOpen;
+    }
+    token.value += char;
+    return text;
   }
 
   function tagOpen(char) {
     if (char === '/') {
       return endTagOpen;
     }
-    if (isLetterReg.test(char)) {
-      token = new StartTagToken();
-      token.name = char.toLowerCase();
-      return tagName;
-    }
-    return error(char);
-  }
+    if (char === '!') {
 
-  function endTagOpen(char) {
-    if (isLetterReg.test(char)) {
-      token = new EndTagToken();
-      token.name = char.toLowerCase();
+    }
+    if (isTagNameStartLetterReg.test(char)) {
+      token = new StartTagToken();
+      token.name = char;
       return tagName;
     }
     return error(char);
@@ -59,47 +79,67 @@ function HTMLLexicalParser(syntaxer) {
 
   function tagName(char) {
     if (char === '/') {
-      return selfClosingStartTag;
+      emitToken();
+      return selfClosingTag;
     }
     if (char === '>') {
-      emitToken(token);
+      emitToken();
+      emitStartTagEndToken(false);
       return data;
     }
     if (isWhiteSpaceReg.test(char)) {
+      emitToken();
       return beforeAttributeName;
     }
-    if (isLetterReg.test(char)) {
-      token.name += char.toLowerCase();
+    if (isTagNameLetterReg.test(char)) {
+      token.name += char;
       return tagName;
     }
     return error(char);
   }
 
-  function selfClosingStartTag(char) {
+  function endTagOpen(char) {
+    if (isTagNameStartLetterReg.test(char)) {
+      token = new EndTagToken();
+      token.name = char;
+      return endTagName;
+    }
+    return error(char);
+  }
+
+  function endTagName(char) {
     if (char === '>') {
-      emitToken(token);
-      const endToken = new EndTagToken();
-      endToken.name = token.name;
-      emitToken(endToken);
+      emitToken();
+      return data;
+    }
+    if (isTagNameLetterReg.test(char)) {
+      token.name += char;
+      return endTagName;
+    }
+    return error(char);
+  }
+
+  function selfClosingTag(char) {
+    if (char === '>') {
+      emitStartTagEndToken(true);
       return data;
     }
     return error(char)
   }
   function beforeAttributeName(char) {
     if (char === '>') {
-      emitToken(token);
+      emitStartTagEndToken(false);
       return data;
     }
     if (char === '/') {
-      return selfClosingStartTag;
+      return selfClosingTag;
     }
     if (isWhiteSpaceReg.test(char)) {
       return beforeAttributeName;
     }
-    if (isAttributeLetterReg.test(char)) {
-      attribute = new Attribute();
-      attribute.name = char;
-      attribute.value = '';
+    if (isAttributeStartLetterReg.test(char)) {
+      token = new Attribute();
+      token.name = char;
       return attributeName;
     }
     return error(char);
@@ -107,23 +147,23 @@ function HTMLLexicalParser(syntaxer) {
 
   function attributeName(char) {
     if (char === '>') {
-      token[attribute.name] = attribute.value;
-      emitToken(token);
+      emitToken();
+      emitStartTagEndToken(false);
       return data;
     }
     if (char === '/') {
-      token[attribute.name] = attribute.value;
-      return selfClosingStartTag;
+      emitToken();
+      return selfClosingTag;
     }
     if (char === '=') {
       return beforeAttributeValue;
     }
     if (isWhiteSpaceReg.test(char)) {
-      token[attribute.name] = attribute.value;
+      emitToken();
       return beforeAttributeName;
     }
     if (isAttributeLetterReg.test(char)) {
-      attribute.name += char;
+      token.name += char;
       return attributeName;
     }
     return error(char);
@@ -136,7 +176,7 @@ function HTMLLexicalParser(syntaxer) {
       return attributeValueSingleQuoted;
     }
     if (isWhiteSpaceReg.test(char)) {
-      attribute.value += char;
+      token.value += char;
       return beforeAttributeValue;
     }
     // TODO 有效的value值
@@ -147,47 +187,43 @@ function HTMLLexicalParser(syntaxer) {
   }
   function attributeValueDoubleQuoted(char) {
     if (char === '"') {
-      token[attribute.name] = attribute.value;
+      emitToken();
       return beforeAttributeName;
     }
-    attribute.value += char;
+    token.value += char;
     return attributeValueDoubleQuoted;
   }
  function attributeValueSingleQuoted(char) {
-    if (char === '"') {
-      token[attribute.name] = attribute.value;
+    if (char === "'") {
+      emitToken();
       return beforeAttributeName;
     }
-    attribute.value += char;
+    token.value += char;
     return attributeValueSingleQuoted;
   }
  function attributeValueWithoutQuoted(char) {
     if (isWhiteSpaceReg.test(char)) {
-      token[attribute.name] = attribute.value;
+      emitToken();
       return beforeAttributeName;
     }
     if (char === '>') {
-      token[attribute.name] = attribute.value;
+      emitToken();
+      emitStartTagEndToken(false);
       return data;
     }
     if (char === '/') {
-      token[attribute.name] = attribute.value;
-      return selfClosingStartTag;
+      emitToken();
+      return selfClosingTag;
     }
     // TODO 有效的value值
     if (/[^/<>=]/.test(char)) {
-      attribute.value += char;
+      token.value += char;
       return attributeValueWithoutQuoted;
     }
     return error(char);
   }
 }
 
-class StartTagToken {}
-
-class EndTagToken {}
-
-class Attribute {}
 
 module.exports = {
   HTMLLexicalParser
