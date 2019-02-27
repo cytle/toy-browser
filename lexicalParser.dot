@@ -1,0 +1,24 @@
+digraph lexicalParser {
+    data[style=filled,color=".7 .3 1.0"]
+    data -> tagOpen [label="<"];
+    data -> text [label="[letter]"];
+    text -> tagOpen [label="<"];
+    tagOpen -> endTagOpen [label="/"];
+    tagOpen -> markupDeclarationOpen [label="!"];
+    tagOpen -> tagName [label="[letter]"];
+    tagName -> selfClosingTag [label="/"];
+    tagName -> data [label=">"];
+    tagName -> beforeAttributeName [label="[WhiteSpace]"];
+    endTagOpen -> endTagName [label="[letter]"];
+    endTagName -> data [label=">"];
+    selfClosingTag -> data [label=">"];
+    beforeAttributeName -> data [label=">"];
+    beforeAttributeName -> selfClosingTag [label="/"];
+    beforeAttributeName -> attributeName [label="[letter]"];
+    attributeName -> databeforeAttributeName [label=">"];
+    attributeName -> selfClosingTag [label="/"];
+    attributeName -> beforeAttributeValue [label="="];
+    attributeName -> beforeAttributeName [label="[WhiteSpace]"];
+    beforeAttributeValue -> attributeValue [label="[letter]"];
+    attributeValue -> beforeAttributeName [label="[WhiteSpace]"];
+}
