@@ -2,6 +2,16 @@
 
 学习了winter老师的《重学前端 | <11 | 浏览器：一个浏览器是如何工作的？（阶段二）>》做的一个简单的`html`编译器
 
+## 编译过程
+
+图来自[此处](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/constructing-the-object-model?hl=zh-cn)
+
+![full-process](./media/full-process.png)
+
+### 词法分析图
+
+![lexicalParser.svg](./media/lexicalParser.svg)
+
 ## Example
 
 ```html
