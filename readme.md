@@ -8,7 +8,9 @@
 
 ![full-process](./media/full-process.png)
 
-### 词法分析图
+### 词法状态机
+
+参考winter老师的画的状态机，画了本项目实行的状态机图，其中描述标签部分还待完善。
 
 ![lexicalParser.svg](./media/lexicalParser.svg)
 
