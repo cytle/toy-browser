@@ -6,11 +6,13 @@
 
 以下是预计进行的流程
 
-1. HTML到DOM树
-2. CSS规则解析
-3. CSS计算，把CSS规则应用到DOM树上（Render Tree）
-4. Render Tree 排版
-5. 最后一步：渲染、合成、绘制
+![浏览器渲染流程](./media/162b2ab2ec70ac5b.png)
+
+1. HTMLParser: HTML到DOM树
+2. CSSPareser: CSS规则解析
+3. Attachment: CSS计算，把CSS规则应用到DOM树上（Render Tree）
+4. Layout: Render Tree 排版
+5. Paint/Composite: 最后一步：绘制、合成
 
 ## HTML到DOM树
 
@@ -26,7 +28,7 @@
 
 参考winter老师的画的状态机，画了本项目实行的状态机图，其中描述标签部分还待完善。
 
-![lexicalParser.svg](./media/lexicalParser.svg)
+![lexicalParser.svg](./media/htmlLexicalParser.svg)
 
 ### Example
 
