@@ -149,10 +149,12 @@ Html to DOM tree
 
 ## Parse CSS
 
+解析`css`字符串，产生`CSSStyleSheet`对象
+
 [MDN: CSS语法](https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Introduction_to_CSS/Syntax)
 
 ![CSS 选择器和规则](./media/css-syntax-ruleset.png)
 
-#### 词法状态机
+### 词法状态机
 
 ![cssLexicalParser](./media/cssLexicalParser.svg)
