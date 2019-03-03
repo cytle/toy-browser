@@ -8,14 +8,15 @@ const {
   DoctypeTagToken,
 } = require('./tokens');
 
-const isWhiteSpaceReg = /[\t \f\n]/
-const isWordStartLetterReg = /[0-9a-zA-Z]/
-const isWordLetterReg = /[_\-0-9a-zA-Z]/
+// 以下是字符判断的正则, 暂时认为只有ASCII码
+const isWhiteSpaceReg = /[\t \f\n]/; // 是否是空格
+const isWordStartLetterReg = /[0-9a-zA-Z]/; // 是否一个词的开始
+const isWordLetterReg = /[_\-0-9a-zA-Z]/; // 是否一个词(多了_-)
 
-const isTagNameStartLetterReg = isWordStartLetterReg;
-const isTagNameLetterReg = isWordLetterReg;
-const isAttributeStartLetterReg = isWordStartLetterReg;
-const isAttributeLetterReg = isWordLetterReg;
+const isTagNameStartLetterReg = isWordStartLetterReg; // 标签名字开始
+const isTagNameLetterReg = isWordLetterReg; // 标签名字
+const isAttributeStartLetterReg = isWordStartLetterReg; // 属性名字开始
+const isAttributeLetterReg = isWordLetterReg; // // 标签名字
 
 function HTMLLexicalParser(syntaxer) {
   let state = data;

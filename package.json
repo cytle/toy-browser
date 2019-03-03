@@ -1,0 +1,19 @@
+{
+  "name": "tinyhtmlparser",
+  "version": "0.0.0",
+  "description": "最近在学习winter老师在极客时间的《重学前端》课程，里面有几讲解释了浏览器是如何工作的，因此就有了做个浏览器的想法（误，哈哈，实际上只是一个玩具而已），并打算把过程记录在这个项目中。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cytle/tinyhtmlparser.git"
+  },
+  "author": "炒饭 <canyoutle@gmail.com> (https://github.com/cytle)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cytle/tinyhtmlparser/issues"
+  },
+  "homepage": "https://github.com/cytle/tinyhtmlparser#readme"
+}

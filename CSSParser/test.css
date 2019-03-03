@@ -1,0 +1,37 @@
+body { font-size: 16px }
+p { font-weight: bold }
+span { color: red }
+p span { display: none }
+img { float: right }
+
+.cls {
+  background: #123 url('./a.png');
+}
+
+div#id1 {
+  color: #123;
+  font-size: 12px;
+}
+.a1 a {
+
+}
+
+div.cls {
+  content: "div.cls" !important;
+}
+
+div .cls {
+  content: "div .cls";
+}
+
+div ~ .cls {
+  content: "div ~ .cls";
+}
+
+div > .cls {
+  content: "div > .cls";
+}
+
+div + .cls {
+  content: "div + .cls";
+}
