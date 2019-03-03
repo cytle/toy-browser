@@ -146,3 +146,13 @@ Html to DOM tree
   ]
 }
 ```
+
+## Parse CSS
+
+[MDN: CSS语法](https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Introduction_to_CSS/Syntax)
+
+![CSS 选择器和规则](./media/css-syntax-ruleset.png)
+
+#### 词法状态机
+
+![cssLexicalParser](./media/cssLexicalParser.svg)
