@@ -72,8 +72,7 @@ function CSSLexicalParser(syntaxer) {
   }
   function selectorStart(char) {
     if (isSeletorStartLetterReg.test(char)) {
-      token = new SelectorToken();
-      token.value = char;
+      token.value += char;
       return selector;
     }
     error(char);

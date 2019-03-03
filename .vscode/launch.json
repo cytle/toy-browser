@@ -7,6 +7,12 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "CSS lexicalParser",
+      "program": "${workspaceFolder}/CSSParser/lexicalParser.test.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "CSS syntaticalParser",
       "program": "${workspaceFolder}/CSSParser/syntaticalParser.test.js"
     }

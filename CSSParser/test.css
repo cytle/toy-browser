@@ -17,7 +17,7 @@ div#id1 {
 }
 
 div.cls {
-  content: "div.cls" !important;
+  content: "div.cls";
 }
 
 div .cls {

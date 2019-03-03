@@ -13,7 +13,7 @@ class CombinatorToken {
   }
 }
 
-// 选择器token
+// 样式token
 class DeclarationToken {
   constructor() {
     this.property = '';
