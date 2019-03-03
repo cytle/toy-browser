@@ -33,6 +33,8 @@ class Element extends Node {
     super(Node.ELEMENT_NODE);
     this.tagName = tagName;
     this.childNodes = [];
+    this.classList = [];
+    this.id = '';
   }
   appendChild(child) {
     this.childNodes.push(child);
@@ -69,6 +71,9 @@ function HTMLSyntaticalParser() {
       return;
     }
     if (token instanceof AttributeToken) {
+      if (token.name === 'class') {
+        stackTop().classList = token.value.split(' ').filter(vo => vo);
+      }
       stackTop()[token.name] = token.value;
       return;
     }
