@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "outDir": "out",
+    "pretty": true,
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noEmitOnError": true,
+
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "strictFunctionTypes": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "skipLibCheck": true,
+
+    "preserveConstEnums": true,
+    "newLine": "lf",
+
+    "lib": [
+        "dom",
+        "es2017"
+    ],
+  },
+  "exclude": [
+    "cmd",
+    "esm",
+    "coverage",
+    "old",
+    "dist",
+    "out",
+    "packages/*/dist",
+    ".felint",
+    "**/node_modules/",
+    ".milti_hooks",
+    "**/test/**/*.spec.ts"
+  ],
+  "compileOnSave": true
+}

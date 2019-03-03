@@ -7,14 +7,24 @@
     {
       "type": "node",
       "request": "launch",
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "tsc: 构建 - tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
       "name": "CSS lexicalParser",
-      "program": "${workspaceFolder}/CSSParser/lexicalParser.test.js"
+      "program": "${workspaceFolder}/CSSParser/lexicalParser.test.ts"
     },
     {
       "type": "node",
       "request": "launch",
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "tsc: 构建 - tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
       "name": "CSS syntaticalParser",
-      "program": "${workspaceFolder}/CSSParser/syntaticalParser.test.js"
+      "program": "${workspaceFolder}/CSSParser/syntaticalParser.test.ts"
     }
   ]
 }
