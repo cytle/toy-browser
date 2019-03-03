@@ -23,6 +23,9 @@ export default class CSSLexicalParser {
     this.state = this.initState;
   }
   constructor(syntaxer) {
+    this.initState = beforeSelector;
+    this.reset();
+
     let token: any = null;
 
     function emitToken() {
@@ -161,7 +164,5 @@ export default class CSSLexicalParser {
       return declarationValue;
     }
 
-    this.initState = beforeSelector;
-    this.reset();
   }
 }

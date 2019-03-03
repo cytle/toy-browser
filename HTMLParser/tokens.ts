@@ -1,57 +1,41 @@
 
 // "开始标签"的开始
 class StartTagToken {
-  constructor() {
-    this.name = '';
-  }
+  name: string = '';
 }
 
 // 属性
 class AttributeToken {
-  constructor() {
-    this.name = '';
-    this.value = '';
-  }
+  name: string = '';
+  value: string = '';
 }
 
 // "开始标签"的结束
 class StartTagEndToken {
-  constructor() {
-    this.isCloseingTagEnd = false
-  }
+  isCloseingTagEnd: boolean = false;
 }
 
 // 结束标签
 class EndTagToken {
-  constructor() {
-    this.name = '';
-  }
+  name: string = '';
 }
 
 // 文本
 class TextToken {
-  constructor() {
-    this.value = '';
-  }
+  value: string = '';
 }
 
 // 注释
 class CommentTagToken {
-  constructor() {
-    this.value = '';
-    this.start
-  }
+  value: string = '';
 }
 
-// 注释
+// Doctype标签
 class DoctypeTagToken {
-  constructor() {
-    this.value = '';
-  }
+  value: string = '';
 }
 
-
-module.exports = {
+export {
   StartTagToken,
   StartTagEndToken,
   AttributeToken,
