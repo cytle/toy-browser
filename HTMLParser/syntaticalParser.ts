@@ -7,7 +7,6 @@ import {
 } from './tokens';
 
 import {
-  Node,
   Document,
   Element,
   Text,
@@ -15,19 +14,21 @@ import {
 
 export default class HTMLSyntaticalParser {
   document: Document = new Document();
-  stackTop: Node = this.document;
-  stack: Node[] = [this.stackTop];
+  stackTop: (Document | Element) = this.document;
+  stack: (Document | Element)[] = [this.stackTop];
   getOutput(): Document {
     return this.document;
   }
-  stachPush(node: Node) {
-    this.stack.push(node);
-    this.stackTop = node;
+  stachPush(el: Element) {
+    this.stackTop.appendChild(el);
+    this.stack.push(el);
+    this.stackTop = el;
   }
-  emitElement() {
+  statckPop() {
     const el = this.stack.pop();
-    if (el) {
-      this.stackTop.appendChild(el);
+    this.stackTop = this.stack[this.stack.length - 1];
+    if (el instanceof Element) {
+      el.mounted();
     }
   }
   receiveInput (token)  {
@@ -41,7 +42,7 @@ export default class HTMLSyntaticalParser {
     }
     if (token instanceof StartTagEndToken) {
       if (token.isCloseingTagEnd) {
-        this.emitElement();
+        this.statckPop();
       }
       return;
     }
@@ -51,11 +52,11 @@ export default class HTMLSyntaticalParser {
         return;
       }
       if (token instanceof EndTagToken) {
-        const node = this.stackTop;
-        if (node.tagName !== token.name) {
-          throw new Error('endTagToken does not correspond to the current element');
+        if (this.stackTop.tagName !== token.name.toUpperCase()) {
+          // tslint:disable-next-line: max-line-length
+          throw new Error(`endTagToken's name (${token.name.toUpperCase()}) does not correspond to the current element which name is (${this.stackTop.tagName})`);
         }
-        this.emitElement();
+        this.statckPop();
         return;
       }
     }

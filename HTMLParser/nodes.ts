@@ -1,7 +1,3 @@
-import { CSSStyleSheet } from '../CSSParser/syntaticalParser';
-import parseCSS from '../CSSParser/parseCSS';
-import resourceLoad from '../Network/resourceLoad';
-
 export class Node {
   static ELEMENT_NODE = 1;
   static TEXT_NODE = 3;
@@ -18,12 +14,6 @@ export class Node {
     child.parent = this;
     child.ownerDocument = this.ownerDocument;
     this.childNodes.push(child);
-    child.mounted();
-  }
-  getRootNode() {
-    return this.parent === this
-      ? this
-      : this.parent.getRootNode();
   }
 }
 
@@ -31,7 +21,7 @@ export class Element extends Node {
   public classList: string[] = [];
   public id: string = '';
   public tagName: string = '';
-  public ref: string = '';
+  public rel: string = '';
   public href: string = '';
   public attributes = {};
   constructor(tagName: string) {
@@ -53,24 +43,8 @@ export class Element extends Node {
   }
 }
 
-class TasksQueue extends Set<Promise<any|void>> {
-  add(p: Promise<any|void>) {
-    p.catch(() => {}).then(() => {
-      this.delete(p);
-      if (this.size === 0) {
-        this.onallfinish();
-      }
-    });
-    return super.add(p);
-  }
-  onallfinish() {
-    console.log('onallfinish');
-  }
-}
-
 export class Document extends Node {
-  styleSheets: CSSStyleSheet[] = [];
-  tasksQueue: TasksQueue = new TasksQueue();
+  styleSheetNodes: Element[] = [];
   constructor() {
     super(Node.DOCUMENT_NODE);
     this.ownerDocument = this;
@@ -78,13 +52,10 @@ export class Document extends Node {
   }
   mountedElement(el: Element) {
     if (el.tagName === 'LINK'
-    && el.ref.toLowerCase() === 'stylesheet'
+    && el.rel.toLowerCase() === 'stylesheet'
     && el.href
     ) {
-      const task = resourceLoad(el.href)
-        .then(cssText => this.styleSheets.push(parseCSS(cssText)));
-
-      this.tasksQueue.add(task);
+      this.styleSheetNodes.push(el);
     }
   }
 }

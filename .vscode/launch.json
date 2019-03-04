@@ -12,6 +12,17 @@
       "outFiles": [
         "${workspaceFolder}/out/**/*.js"
       ],
+      "name": "browser",
+      "program": "${workspaceFolder}/index.ts"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "tsc: 构建 - tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
       "name": "CSS lexicalParser",
       "program": "${workspaceFolder}/CSSParser/lexicalParser.test.ts"
     },
