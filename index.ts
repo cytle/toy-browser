@@ -1,28 +1,12 @@
-import HTMLLexicalParser from './HTMLParser/lexicalParser';
-import HTMLSyntaticalParser, { Document } from './HTMLParser/syntaticalParser';
-import CSSLexicalParser from './CSSParser/lexicalParser';
-import CSSSyntaticalParser, { CSSStyleSheet } from './CSSParser/syntaticalParser';
 
-export function parseHTML(text:string): Document {
-  const syntaxer = new HTMLSyntaticalParser();
-  const lexer = new HTMLLexicalParser(syntaxer);
+import resourceLoad from './Network/resourceLoad';
+import parseHTML from './HTMLParser/parseHTML';
 
-  for (const c of text) {
-    lexer.receiveInput(c);
-  }
-  return syntaxer.getOutput();
-}
+export default async function browse(url: string) {
+  const refererUrl = url;
+  const document = parseHTML(await resourceLoad(url));
 
-export function parseCSS(text:string): CSSStyleSheet {
-  const syntaxer = new CSSSyntaticalParser();
-  const lexer = new CSSLexicalParser(syntaxer);
-
-  for (const c of text) {
-    lexer.receiveInput(c);
-  }
-  return syntaxer.getOutput();
-}
-
-export default function browse(url: string) {
-
+  document.childNodes.forEach((node) => {
+    node.childNodes.forEach()
+  });
 }
