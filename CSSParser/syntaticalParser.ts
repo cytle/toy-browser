@@ -5,12 +5,12 @@ import {
   CombinatorToken,
 } from './tokens';
 
-class CSSStyleRule {
+export class CSSStyleRule {
   selectors: CSSSelector[] = [];
   declarations: any = {};
 }
 
-class CSSStyleSheet {
+export class CSSStyleSheet {
   rules: CSSStyleRule[] = [];
 }
 

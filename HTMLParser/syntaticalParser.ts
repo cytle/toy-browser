@@ -30,7 +30,7 @@ class Element extends Node {
   }
 }
 
-class Document extends Node {
+export class Document extends Node {
   constructor() {
     super(Node.DOCUMENT_NODE);
   }
