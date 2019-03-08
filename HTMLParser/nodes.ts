@@ -1,3 +1,5 @@
+import { CSSStyleRule } from '../CSSParser/syntaticalParser';
+
 export class Node {
   static ELEMENT_NODE = 1;
   static TEXT_NODE = 3;
@@ -24,6 +26,8 @@ export class Element extends Node {
   public rel: string = '';
   public href: string = '';
   public attributes = {};
+  public childNodes: Element[] = [];
+  public matchedCSSStyleRules: CSSStyleRule[] = [];
   constructor(tagName: string) {
     super(Node.ELEMENT_NODE);
     this.tagName = tagName.toUpperCase();

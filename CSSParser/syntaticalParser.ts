@@ -5,37 +5,73 @@ import {
   CombinatorToken,
 } from './tokens';
 
+let ruleIndex = 100;
+
 export class CSSStyleRule {
   selectors: CSSSelector[] = [];
-  declarations: any = {};
+  declarations: CSSStyleDeclaration = new CSSStyleDeclaration();
+  index: number = ruleIndex += 1;
 }
 
 export class CSSStyleSheet {
-  rules: CSSStyleRule[] = [];
+  cssRules: CSSStyleRule[] = [];
 }
 
-class CSSSelector {
-  type: string = '';
+export class CSSStyleDeclaration {
+  set(key: string, value: string) {
+    this[key.trim()] = value.trim();
+  }
+}
+
+export enum CSSSelectorCombinator {
+  AND_COMBINATOR, // 且
+  SPACE_COMBINATOR, // 空格: 后代，选中它的子节点和所有子节点的后代节点。
+  CHILD_COMBINATOR, // >: 子代，选中它的子节点。
+  ADJACENT_SIBLING_COMBINATOR, // +: 直接后继选择器，选中它的下一个相邻节点。
+  GENERAL_SIBLING_COMBINATOR, // ~：后继，选中它之后所有的相邻节点。
+}
+export enum CSSSelectorType {
+  ID_SELECTOR,
+  ELEMENT_SELECTOR,
+  CLASS_SELECTOR,
+}
+export class CSSSelector {
+  type: CSSSelectorType;
   name: string = '';
-  combinator: (string | null) = null;
+  combinator: CSSSelectorCombinator;
   next: (CSSSelector | null) = null;
-  static ID_SELECTOR = 'id';
-  static ELEMENT_SELECTOR = 'element';
-  static CLASS_SELECTOR = 'class';
-  constructor(value: string) {
+  constructor(value: string, public rule: CSSStyleRule) {
     if (value[0] === '.') {
-      this.type = CSSSelector.CLASS_SELECTOR;
+      this.type = CSSSelectorType.CLASS_SELECTOR;
       this.name = value.slice(1);
     } else if (value[0] === '#') {
-      this.type = CSSSelector.ID_SELECTOR;
+      this.type = CSSSelectorType.ID_SELECTOR;
       this.name = value.slice(1);
     } else {
-      this.type = CSSSelector.ELEMENT_SELECTOR;
+      this.type = CSSSelectorType.ELEMENT_SELECTOR;
       this.name = value;
     }
   }
   setCombinator(combinator) {
-    this.combinator = combinator;
+    switch (combinator) {
+      case '':
+        this.combinator = CSSSelectorCombinator.AND_COMBINATOR;
+        break;
+      case ' ':
+        this.combinator = CSSSelectorCombinator.SPACE_COMBINATOR;
+        break;
+      case '>':
+        this.combinator = CSSSelectorCombinator.CHILD_COMBINATOR;
+        break;
+      case '+':
+        this.combinator = CSSSelectorCombinator.ADJACENT_SIBLING_COMBINATOR;
+        break;
+      case '~':
+        this.combinator = CSSSelectorCombinator.GENERAL_SIBLING_COMBINATOR;
+        break;
+      default:
+        throw new Error(`${combinator} is not allowed combinator`);
+    }
   }
   setNext(next) {
     this.next = next;
@@ -50,7 +86,7 @@ export default class CSSSyntaticalParser {
     return this.sheet;
   }
   emitRule() {
-    this.sheet.rules.push(this.rule);
+    this.sheet.cssRules.push(this.rule);
     this.rule = new CSSStyleRule();
     this.selector = null;
   }
@@ -59,7 +95,7 @@ export default class CSSSyntaticalParser {
   }
   receiveInput(token) {
     if (token instanceof SelectorToken) {
-      const selector = new CSSSelector(token.value.trim());
+      const selector = new CSSSelector(token.value.trim(), this.rule);
       if (this.selector) {
         this.selector.setNext(selector);
       } else {
@@ -81,7 +117,7 @@ export default class CSSSyntaticalParser {
       return;
     }
     if (token instanceof DeclarationToken) {
-      this.rule.declarations[token.property.trim()] = token.value.trim();
+      this.rule.declarations.set(token.property, token.value);
       return;
     }
     if (token instanceof DeclarationsBlockEndToken) {

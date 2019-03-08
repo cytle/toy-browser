@@ -1,4 +1,3 @@
-import path from 'path';
 import resourceLoad from './Network/resourceLoad';
 import parseHTML from './HTMLParser/parseHTML';
 import attach from './Attachment/attach';
@@ -17,7 +16,8 @@ export default async function browse(url: string) {
     }
     return parseCSS(cssText);
   }));
-  attach(document, styleSheets);
-}
 
-browse(path.resolve(__dirname, '..', 'HTMLParser', 'test.html'));
+  // attach
+  const renderTree = attach(document, styleSheets);
+  console.log(renderTree);
+}

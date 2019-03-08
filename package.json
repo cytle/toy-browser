@@ -4,7 +4,7 @@
   "description": "最近在学习winter老师在极客时间的《重学前端》课程，里面有几讲解释了浏览器是如何工作的，因此就有了做个浏览器的想法（误，哈哈，实际上只是一个玩具而已），并打算把过程记录在这个项目中。",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-node index.test.ts"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "husky": "^1.3.1",
     "jest": "^24.1.0",
     "lint-staged": "^8.1.5",
+    "ts-node": "^8.0.3",
     "tslint": "^5.13.1",
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.3.3333"
