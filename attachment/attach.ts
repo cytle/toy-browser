@@ -1,10 +1,10 @@
 import {
   CSSStyleSheet,
-  CSSSelector,
   CSSSelectorCombinator,
   CSSSelectorType,
-  CSSStyleRule,
+  CSSSelectorData,
   CSSStyleDeclaration,
+  CSSCompoundSelector,
 } from '../CSSParser/syntaticalParser';
 import { Element, Document, Node } from '../HTMLParser/nodes';
 
@@ -12,7 +12,7 @@ export default function attach(
   document: Document,
   styleSheets: CSSStyleSheet[],
 ): RenderNode {
-  const selectors: CSSSelector[] = [];
+  const selectors: CSSCompoundSelector[] = [];
   styleSheets.forEach((vo) => {
     vo.cssRules.forEach((rule) => {
       selectors.push(...rule.selectors);
@@ -37,8 +37,11 @@ class RenderNode {
 
 class CSSNode {
   inherited: CSSNode|void;
-  constructor(public selectors: CSSSelector[] = [], public childSelectors: CSSSelector[] = []) {}
-  createChild(selectors: CSSSelector[], childSelectors: CSSSelector[]) {
+  constructor(
+    public selectors: CSSCompoundSelector[] = [],
+    public childSelectors: CSSCompoundSelector[] = [],
+  ) {}
+  createChild(selectors: CSSCompoundSelector[], childSelectors: CSSCompoundSelector[]) {
     const obj = new CSSNode(selectors, childSelectors);
     obj.inherited = this;
     return obj;
@@ -61,17 +64,17 @@ function matchDOM(
     return [];
   }
   // 直接兄弟选择器
-  let adjacentSiblingSelectors: CSSSelector[] = [];
+  let adjacentSiblingSelectors: CSSCompoundSelector[] = [];
   // 所有兄弟选择器
-  const generalSiblingSelectors: CSSSelector[] = [];
+  const generalSiblingSelectors: CSSCompoundSelector[] = [];
 
   return childNodes.map((childNode) => {
-    const nextAdjacentSiblingSelectorscssNode: CSSSelector[] = [];
-    const nextChildSelectors: CSSSelector[] = [];
-    const nextSpacedSelectors: CSSSelector[] = [];
-    const matchedCSSStyleRules: CSSStyleRule[] = [];
+    const nextAdjacentSiblingSelectorscssNode: CSSCompoundSelector[] = [];
+    const nextChildSelectors: CSSCompoundSelector[] = [];
+    const nextSpacedSelectors: CSSCompoundSelector[] = [];
+    const matchedCSSStyleRules: CSSSelectorData[] = [];
 
-    function patchSelector(selector: CSSSelector) {
+    function patchSelector(selector: CSSCompoundSelector) {
       if (!(childNode instanceof Element)
         || ['HEAD', 'LINK', 'META', 'SCRIPT', 'STYLE'].includes(childNode.tagName)) {
         return;
@@ -83,13 +86,10 @@ function matchDOM(
       const nextSelector = selector.next;
       // 如果没有下一个选择条件，说明已经完全匹配
       if (!nextSelector) {
-        matchedCSSStyleRules.push(selector.rule);
+        matchedCSSStyleRules.push(selector.data);
         return;
       }
       switch (selector.combinator) {
-        case CSSSelectorCombinator.AND_COMBINATOR:
-          patchSelector(nextSelector);
-          break;
         case CSSSelectorCombinator.ADJACENT_SIBLING_COMBINATOR:
           nextAdjacentSiblingSelectorscssNode.push(nextSelector);
           break;
@@ -121,8 +121,8 @@ function matchDOM(
       ),
     );
     Object.assign(renderNode.style, ...matchedCSSStyleRules
-      .sort((a, b) => a.index - b.index)
-      .map(vo => vo.declarations));
+      .sort((a, b) => (a.specificity - b.specificity) + (a.rule.index > b.rule.index ? 1 : -1))
+      .map(vo => vo.rule.declarations));
     // rules.push(dom.style);
     return renderNode;
   });
@@ -133,17 +133,19 @@ function matchDOM(
  * @param el 节点
  * @param selector 选择器
  */
-function matchElementAndSelector(el: Element, selector: CSSSelector) {
-  const { type, name } = selector;
+function matchElementAndSelector(el: Element, selector: CSSCompoundSelector) {
+  const { subSelectors } = selector;
   const { tagName, id, classList } = el;
-  switch (type) {
-    case CSSSelectorType.CLASS_SELECTOR:
-      return classList.includes(name);
-    case CSSSelectorType.ELEMENT_SELECTOR:
-      return tagName === name;
-    case CSSSelectorType.ID_SELECTOR:
-      return id === name;
-    default:
-      throw new Error(`${type} is unkown type of selector`);
-  }
+  return subSelectors.every(({ name, type }) => {
+    switch (type) {
+      case CSSSelectorType.CLASS_SELECTOR:
+        return classList.includes(name);
+      case CSSSelectorType.ELEMENT_SELECTOR:
+        return tagName === name;
+      case CSSSelectorType.ID_SELECTOR:
+        return id === name;
+      default:
+        throw new Error(`${type} is unkown type of selector`);
+    }
+  });
 }

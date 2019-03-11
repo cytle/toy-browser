@@ -4,6 +4,11 @@ class SelectorToken {
   value: string = '';
 }
 
+// 子选择器token
+class SubSelectorToken {
+  value: string = '';
+}
+
 // 组合器token
 class CombinatorToken {
   value: string = '';
@@ -24,4 +29,5 @@ export {
     DeclarationToken,
     DeclarationsBlockEndToken,
     CombinatorToken,
+    SubSelectorToken,
 };

@@ -3,6 +3,7 @@ import {
   DeclarationToken,
   DeclarationsBlockEndToken,
   CombinatorToken,
+  SubSelectorToken,
 }  from './tokens';
 
 // 以下是字符判断的正则, 暂时认为只有ASCII码
@@ -84,9 +85,7 @@ export default class CSSLexicalParser {
       }
       if (/[#.]/.test(char)) {
         emitToken();
-    // '且'组合器
-        emitCombinatorToken('');
-        token = new SelectorToken();
+        token = new SubSelectorToken();
         token.value = char;
         return selectorStart;
       }
