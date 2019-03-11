@@ -70,7 +70,7 @@ export class CSSCompoundSelector {
         this.combinator = CSSSelectorCombinator.GENERAL_SIBLING_COMBINATOR;
         break;
       default:
-        throw new Error(`${combinator} is not allowed combinator`);
+        throw new Error(`"${combinator}" is not allowed combinator`);
     }
   }
   setNext(next: CSSCompoundSelector) {
@@ -124,8 +124,7 @@ export default class CSSSyntaticalParser {
   }
   receiveInput(token) {
     if (token instanceof SelectorToken) {
-      const hasSelector = this.selector;
-      if (hasSelector) {
+      if (!this.selector) {
         this.selectorData = new CSSSelectorData(this.rule);
       }
       const selector = new CSSCompoundSelector(this.selectorData);
@@ -151,7 +150,7 @@ export default class CSSSyntaticalParser {
       if (value === ',') {
         this.selector = null;
       } else if (this.selector) {
-        this.selector.setCombinator(value);
+        this.selector.setCombinator(value || token.value);
       } else {
         throw new Error('setCombinator时没有selector');
       }
