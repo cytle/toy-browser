@@ -49,7 +49,7 @@ export class CSSSelector {
       this.name = value.slice(1);
     } else {
       this.type = CSSSelectorType.ELEMENT_SELECTOR;
-      this.name = value;
+      this.name = value.toUpperCase();
     }
   }
   setCombinator(combinator) {

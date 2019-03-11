@@ -1,7 +1,39 @@
 import {
-  CSSStyleSheet, CSSSelector, CSSSelectorCombinator, CSSSelectorType,
+  CSSStyleSheet,
+  CSSSelector,
+  CSSSelectorCombinator,
+  CSSSelectorType,
+  CSSStyleRule,
+  CSSStyleDeclaration,
 } from '../CSSParser/syntaticalParser';
-import { Element } from '../HTMLParser/nodes';
+import { Element, Document, Node } from '../HTMLParser/nodes';
+
+export default function attach(
+  document: Document,
+  styleSheets: CSSStyleSheet[],
+): RenderNode {
+  const selectors: CSSSelector[] = [];
+  styleSheets.forEach((vo) => {
+    vo.cssRules.forEach((rule) => {
+      selectors.push(...rule.selectors);
+    });
+  });
+  if (document.childNodes.length === 0) {
+    const el = new Element('html');
+    document.appendChild(el);
+    el.mounted();
+  }
+  const node: Node = document.childNodes[0];
+  return new RenderNode(
+    node,
+    matchDOM(node.childNodes, new CSSNode(selectors)),
+  );
+}
+
+class RenderNode {
+  style: CSSStyleDeclaration = new CSSStyleDeclaration;
+  constructor(public node: Node, public childNodes: RenderNode[]) {}
+}
 
 class CSSNode {
   inherited: CSSNode|void;
@@ -22,39 +54,36 @@ class CSSNode {
   }
 }
 
-export default function attach(domTree: Element, styleSheets: CSSStyleSheet[]) {
-  const selectors: CSSSelector[] = [];
-  styleSheets.forEach((vo) => {
-    vo.cssRules.forEach((rule) => {
-      selectors.push(...rule.selectors);
-    });
-  });
-  matchDOM(domTree.childNodes, new CSSNode(selectors));
-
-  console.log(styleSheets);
-  console.log(domTree);
-}
-
 function matchDOM(
-  doms: Element[], cssNode: CSSNode,
-) {
+  childNodes: Node[], cssNode: CSSNode,
+): RenderNode[] {
+  if (childNodes.length === 0) {
+    return [];
+  }
+  // 直接兄弟选择器
   let adjacentSiblingSelectors: CSSSelector[] = [];
+  // 所有兄弟选择器
   const generalSiblingSelectors: CSSSelector[] = [];
 
-  doms.forEach((dom) => {
+  return childNodes.map((childNode) => {
     const nextAdjacentSiblingSelectorscssNode: CSSSelector[] = [];
-    const nextChildRules: CSSSelector[] = [];
-    const nextSpacedRules: CSSSelector[] = [];
+    const nextChildSelectors: CSSSelector[] = [];
+    const nextSpacedSelectors: CSSSelector[] = [];
+    const matchedCSSStyleRules: CSSStyleRule[] = [];
 
     function patchSelector(selector: CSSSelector) {
-      const isMatched = matchElementAndSelector(dom, selector);
+      if (!(childNode instanceof Element)
+        || ['HEAD', 'LINK', 'META', 'SCRIPT', 'STYLE'].includes(childNode.tagName)) {
+        return;
+      }
+      const isMatched = matchElementAndSelector(childNode, selector);
       if (!isMatched) {
         return;
       }
       const nextSelector = selector.next;
       // 如果没有下一个选择条件，说明已经完全匹配
       if (!nextSelector) {
-        dom.matchedCSSStyleRules.push(selector.rule);
+        matchedCSSStyleRules.push(selector.rule);
         return;
       }
       switch (selector.combinator) {
@@ -68,12 +97,10 @@ function matchDOM(
           generalSiblingSelectors.push(nextSelector);
           break;
         case CSSSelectorCombinator.CHILD_COMBINATOR:
-          nextChildRules.push(nextSelector);
+          nextChildSelectors.push(nextSelector);
           break;
         case CSSSelectorCombinator.SPACE_COMBINATOR:
-          nextSpacedRules.push(nextSelector);
-          break;
-        default:
+          nextSpacedSelectors.push(nextSelector);
           break;
       }
     }
@@ -85,8 +112,19 @@ function matchDOM(
 
     adjacentSiblingSelectors = nextAdjacentSiblingSelectorscssNode;
 
-    // 递归子节点
-    matchDOM(dom.childNodes, cssNode.createChild(nextSpacedRules, nextChildRules));
+    const renderNode = new RenderNode(
+      childNode,
+      // 递归子节点
+      matchDOM(
+        childNode.childNodes,
+        cssNode.createChild(nextSpacedSelectors, nextChildSelectors),
+      ),
+    );
+    Object.assign(renderNode.style, ...matchedCSSStyleRules
+      .sort((a, b) => a.index - b.index)
+      .map(vo => vo.declarations));
+    // rules.push(dom.style);
+    return renderNode;
   });
 }
 

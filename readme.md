@@ -158,3 +158,7 @@ Html to DOM tree
 ### 词法状态机
 
 ![cssLexicalParser](./media/cssLexicalParser.svg)
+
+## attachment
+
+[css-typed-om-1](https://www.w3.org/TR/css-typed-om-1/)
