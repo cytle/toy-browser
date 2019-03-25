@@ -178,7 +178,7 @@ Html to DOM tree
   - [ ] 单位
   - [ ] 颜色
 - 优先级
-  - [ ] specificity
+  - [x] specificity
   - [x] 先后优先级
 - 注释
 - at-rule
@@ -186,3 +186,13 @@ Html to DOM tree
 ## attachment
 
 [css-typed-om-1](https://www.w3.org/TR/css-typed-om-1/)
+
+## Layout
+
+[MDN: 块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
+
+- [winter: CSS layout入门](http://www.cnblogs.com/winter-cn/archive/2012/11/13/2768732.html)
+- [winter: CSS布局](https://www.cnblogs.com/winter-cn/archive/2013/05/11/3072929.html#3753572)
+- [W3C: CSS2 visuren](https://www.w3.org/html/ig/zh/wiki/CSS2/visuren)
+- [W3C: HTML5](https://www.w3.org/html/ig/zh/wiki/HTML5)
+- [W3C: html syntax](https://w3c.github.io/html/syntax.html)

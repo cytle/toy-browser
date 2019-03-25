@@ -8,6 +8,11 @@ import {
 } from '../CSSParser/syntaticalParser';
 import { Element, Document, Node } from '../HTMLParser/nodes';
 
+/**
+ * DOM树匹配样式表
+ * @param document DOMTree
+ * @param styleSheets styleSheets
+ */
 export default function attach(
   document: Document,
   styleSheets: CSSStyleSheet[],
@@ -30,7 +35,7 @@ export default function attach(
   );
 }
 
-class RenderNode {
+export class RenderNode {
   style: CSSStyleDeclaration = new CSSStyleDeclaration;
   constructor(public node: Node, public childNodes: RenderNode[]) {}
 }

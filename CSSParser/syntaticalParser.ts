@@ -22,6 +22,9 @@ export class CSSStyleSheet {
 }
 
 export class CSSStyleDeclaration {
+  display: string;
+  position: string;
+  'box-size': string;
   set(key: string, value: string) {
     this[key.trim()] = value.trim();
   }

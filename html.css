@@ -1,0 +1,200 @@
+html {
+    display: block;
+}
+
+head, link, meta, script, style, title {
+    display: none;
+}
+
+body {
+    display: block;
+    margin: 8px;
+}
+
+p {
+    display: block;
+}
+
+address, article, aside, div, footer, header, hgroup, layer, main, nav, section {
+    display: block;
+}
+
+marquee {
+    display: inline-block;
+}
+
+blockquote {
+    display: block;
+}
+
+figcaption {
+    display: block;
+}
+
+figure {
+    display: block;
+}
+
+q {
+    display: inline;
+}
+
+center {
+    display: block;
+}
+
+hr {
+    display: block;
+    border-style: inset;
+    border-width: 1px;
+}
+
+video {
+    object-fit: contain;
+}
+
+h1 {
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+h3 {
+    display: block;
+    font-size: 1.17em;
+    font-weight: bold;
+}
+
+h4 {
+    display: block;
+    font-weight: bold;
+}
+
+h5 {
+    display: block;
+    font-size: .83em;
+    font-weight: bold;
+}
+
+h6 {
+    display: block;
+    font-size: .67em;
+    font-weight: bold;
+}
+
+table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: gray;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+tfoot {
+    display: table-footer-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+table > tr {
+    vertical-align: middle;
+}
+
+col {
+    display: table-column;
+}
+
+colgroup {
+    display: table-column-group;
+}
+
+tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+td, th {
+    display: table-cell;
+    vertical-align: inherit;
+}
+
+th {
+    font-weight: bold;
+}
+
+caption {
+    display: table-caption;
+}
+
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+}
+
+ol {
+    display: block;
+    list-style-type: decimal;
+}
+
+li {
+    display: list-item;
+}
+
+ul ul, ol ul {
+    list-style-type: circle;
+}
+
+ol ol ul, ol ul ul, ul ol ul, ul ul ul {
+    list-style-type: square;
+}
+
+dd {
+    display: block;
+}
+
+dl {
+    display: block;
+}
+
+dt {
+    display: block;
+}
+
+
+form {
+    display: block;
+}
+
+label {
+    cursor: default;
+}
+
+input, textarea, keygen, select, button {
+    color: initial;
+    letter-spacing: normal;
+    word-spacing: normal;
+    line-height: normal;
+    text-transform: none;
+    text-indent: 0;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+}
