@@ -185,7 +185,8 @@ Html to DOM tree
 
 ## attachment
 
-[css-typed-om-1](https://www.w3.org/TR/css-typed-om-1/)
+- [css-typed-om-1](https://www.w3.org/TR/css-typed-om-1/)
+- [Appendix D. Default style sheet for HTML 4](https://drafts.csswg.org/css2/sample.html)
 
 ## Layout
 
