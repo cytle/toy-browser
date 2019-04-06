@@ -158,3 +158,42 @@ Html to DOM tree
 ### 词法状态机
 
 ![cssLexicalParser](./media/cssLexicalParser.svg)
+
+### 完成度
+
+- 选择器
+  - [x] ID选择器
+  - [x] 类选择器
+  - [x] 元素选择器
+  - [ ] 伪类
+  - [ ] 伪元素
+  - [ ] 属性选择器
+- 组合器
+  - [x] 直接子代组合器 '>' ‘ul > li’
+  - [x] 后代组合器 'space' 'ul li'
+  - [x] 相邻兄弟组合器 '+' 'div + .foo'
+  - [x] 通用兄弟组合器 '~' 'div ~ .foo'
+  - [x] 选择器组 ',' 'div, .foo'
+- 样式解析
+  - [ ] 单位
+  - [ ] 颜色
+- 优先级
+  - [x] specificity
+  - [x] 先后优先级
+- 注释
+- at-rule
+
+## attachment
+
+- [css-typed-om-1](https://www.w3.org/TR/css-typed-om-1/)
+- [Appendix D. Default style sheet for HTML 4](https://drafts.csswg.org/css2/sample.html)
+
+## Layout
+
+[MDN: 块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
+
+- [winter: CSS layout入门](http://www.cnblogs.com/winter-cn/archive/2012/11/13/2768732.html)
+- [winter: CSS布局](https://www.cnblogs.com/winter-cn/archive/2013/05/11/3072929.html#3753572)
+- [W3C: CSS2 visuren](https://www.w3.org/html/ig/zh/wiki/CSS2/visuren)
+- [W3C: HTML5](https://www.w3.org/html/ig/zh/wiki/HTML5)
+- [W3C: html syntax](https://w3c.github.io/html/syntax.html)

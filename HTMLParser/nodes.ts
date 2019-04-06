@@ -24,6 +24,7 @@ export class Element extends Node {
   public rel: string = '';
   public href: string = '';
   public attributes = {};
+  public childNodes: Node[] = [];
   constructor(tagName: string) {
     super(Node.ELEMENT_NODE);
     this.tagName = tagName.toUpperCase();

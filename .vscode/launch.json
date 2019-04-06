@@ -13,7 +13,7 @@
         "${workspaceFolder}/out/**/*.js"
       ],
       "name": "browser",
-      "program": "${workspaceFolder}/index.ts"
+      "program": "${workspaceFolder}/index.test.ts"
     },
     {
       "type": "node",
